@@ -1,13 +1,13 @@
 import express from 'express';
-import { registerUser } from '../controllers/userController';
+import { registerUser, loginUser, getUserProfile } from '../controllers/userController.js';
+import { protect } from '../middleware/authMiddleware.js';
 
-const userRouter = express.Router();
+const userRoutes = express.Router();
 
-userRouter.post('/register', registerUser);
-userRouter.post('/login', loginUser);
+userRoutes.post('/register', registerUser);
+userRoutes.post('/login', loginUser);
 
 // protect route as token will be required
+userRoutes.get('/profile', protect, getUserProfile);
 
-userRouter.get('/profile', protect, getUserProfile);
-
-export default userRouter;
+export default userRoutes;
