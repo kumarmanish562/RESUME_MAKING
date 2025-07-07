@@ -11,15 +11,17 @@ export const createResume = async (req, res) => {
       userId: req.user._id,
       title,
       profileInfo: {
-        name: '',
-        summary: '',
-        profilePicture: '',
+        FullName: '',
+        designation: '',
+       summary: '',
       },
       contactInfo: {
         email: '',
         phone: '',
-        address: '',
-        website: '',
+        location: '',
+        linkedIn: '',
+       github: '',
+        website: '',  
       },
       workExperience: [
         {
@@ -41,7 +43,7 @@ export const createResume = async (req, res) => {
       skills: [
         {
           name: '',
-          progress: 0, // Default progress set to 0
+          progress: 0, 
         },
       ],
       project: [
@@ -68,7 +70,7 @@ export const createResume = async (req, res) => {
       languages: [
         {
           name: '',
-          proficiency: 0, // Default proficiency set to 0
+          proficiency: 0, 
         },
       ],
       interests: [''],
@@ -138,7 +140,7 @@ export const updateResume = async (req, res) => {
       userId: req.user._id,
     });
     if (!resume) {
-      return res.status(404).json({ message: 'Resume not found' });
+      return res.status(404).json({ message: 'Resume not found or not authorized' });
     }
 
     //Merge update resume

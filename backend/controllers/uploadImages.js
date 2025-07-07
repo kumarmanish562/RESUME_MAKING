@@ -1,13 +1,13 @@
 import fs from 'fs';
 import path from 'path';
-
 import resume from '../models/resumeModel.js';
 import upload from '../middleware/uploadMiddleware.js'
+import { error } from 'console';
 
 export const uploadResumeImages = async (req, res) => {
-  try {
-    //confirm multer to handle images
-    upload .fields([{name: "thumbnail"}, {name: "profileImage"}])
+  try { 
+    //configure multer to handle images
+    upload.fields([{name: "thumbnail"}, {name: "profileImage"}])
     (req, res, async (err) => {
       if(err) {
         return res.status(400).json({message: "File upload failed", error: err.message})
