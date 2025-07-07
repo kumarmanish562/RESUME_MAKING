@@ -85,7 +85,7 @@ export const createResume = async (req, res) => {
         },
       ],
     });
-    const newResume = await resume.create({
+    const newResume = await Resume.create({
       userId: req.user._id,
       title,
       ...defaultResumeData,
@@ -100,7 +100,7 @@ export const createResume = async (req, res) => {
 };
 
 //get Function
-export const getResume = async (req, res) => {
+export const getUserResumes = async (req, res) => {
   try {
     const resume = await Resume.find({ userId: req.user._id }).sort({
       updatedAt: -1,
