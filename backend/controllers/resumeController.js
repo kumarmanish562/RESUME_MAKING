@@ -3,88 +3,73 @@ import Resume from '../models/resumeModel.js';
 import fs from 'fs';
 
 export const createResume = async (req, res) => {
-  try {
-    const { title } = req.body;
+    try {
+        const { title } = req.body;
 
-    //default templates
-    const resume = new Resume({
-      userId: req.user._id,
-      title,
-      profileInfo: {
-        FullName: '',
-        designation: '',
-       summary: '',
-      },
-      contactInfo: {
-        email: '',
-        phone: '',
-        location: '',
-        linkedIn: '',
-       github: '',
-        website: '',  
-      },
-      workExperience: [
-        {
-          company: '',
-          role: '',
-          startDate: null,
-          endDate: null,
-          description: '',
-        },
-      ],
-      education: [
-        {
-          degree: '',
-          institution: '',
-          startDate: null,
-          endDate: null,
-        },
-      ],
-      skills: [
-        {
-          name: '',
-          progress: 0, 
-        },
-      ],
-      project: [
-        {
-          title: '',
-          description: '',
-          githublink: '',
-          liveLink: '',
-          startDate: null,
-          endDate: null,
-          link: '',
-        },
-      ],
-      certifications: [
-        {
-          title: '',
-          issuer: '',
-          issueDate: null,
-          expirationDate: null,
-          credentialId: '',
-          credentialUrl: '',
-        },
-      ],
-      languages: [
-        {
-          name: '',
-          proficiency: 0, 
-        },
-      ],
-      interests: [''],
-      references: [
-        {
-          name: '',
-          relationship: '',
-          contactInfo: {
-            email: '',
-            phone: '',
-          },
-        },
-      ],
-    });
+        // Default template
+        const defaultResumeData = {
+            profileInfo: {
+                profileImg: null,
+                previewUrl: '',
+                fullName: '',
+                designation: '',
+                summary: '',
+            },
+            contactInfo: {
+                email: '',
+                phone: '',
+                location: '',
+                linkedin: '',
+                github: '',
+                website: '',
+            },
+            workExperience: [
+                {
+                    company: '',
+                    role: '',
+                    startDate: '',
+                    endDate: '',
+                    description: '',
+                },
+            ],
+            education: [
+                {
+                    degree: '',
+                    institution: '',
+                    startDate: '',
+                    endDate: '',
+                },
+            ],
+            skills: [
+                {
+                    name: '',
+                    progress: 0,
+                },
+            ],
+            projects: [
+                {
+                    title: '',
+                    description: '',
+                    github: '',
+                    liveDemo: '',
+                },
+            ],
+            certifications: [
+                {
+                    title: '',
+                    issuer: '',
+                    year: '',
+                },
+            ],
+            languages: [
+                {
+                    name: '',
+                    progress: '',
+                },
+            ],
+            interests: [''],
+        };
+        
     const newResume = await Resume.create({
       userId: req.user._id,
       title,
