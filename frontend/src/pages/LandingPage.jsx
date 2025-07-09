@@ -1,9 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { landingPageStyles } from '../assets/dummystyle'
-import { LayoutTemplate } from 'lucide-react';
-import { MenuIcon, X } from 'lucide-react';
+import { LayoutTemplate, MenuIcon, X } from 'lucide-react';
+import { UserContext } from '../context/UserContext';
+import { ProfileInfoCard } from '../components/Cards';
 
 const LandingPage = () => {
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+  const [openAuthModal, setOpenAuthModal] = useState(false);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -34,7 +39,15 @@ const LandingPage = () => {
 
           {/* Desktop Navigation */}
          <div className=' hidden md:flex items-center'>
-          {user}
+          {user ? (
+            <ProfileInfoCard />
+          ) : (
+            <button className={landingPageStyles.desktopAuthButton} onClick={() => setOpenAuthModal(true)}>
+              <div className={landingPageStyles.desktopAuthButtonOverlay}>
+              </div>
+              <span className={landingPageStyles.desktopAuthButtonText}>Get Started</span>
+            </button>
+          )}
          </div>
         </div>
       </header>
