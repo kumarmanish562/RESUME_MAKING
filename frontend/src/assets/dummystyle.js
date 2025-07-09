@@ -32,8 +32,8 @@ export const landingPageStyles = {
 
   // Hero section
   heroSection: "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20",
-  heroGrid: "flex flex-wrap justify-between gap-10 lg:gap-12 items-center",
-  heroLeft: "space-y-8",
+heroGrid: "flex flex-col md:flex-row items-center justify-between gap-10 lg:gap-12",
+heroLeft: "w-full md:w-1/2 space-y-8",
   tagline: "inline-flex items-center gap-2 sm:gap-3 px-4 py-2 bg-gradient-to-r from-violet-100 to-fuchsia-100 border border-violet-200 text-violet-700 rounded-full font-bold text-xs sm:text-sm",
   heading: "text-4xl sm:text-6xl lg:text-8xl font-black leading-tight",
   headingText: "block text-slate-900",
