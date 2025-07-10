@@ -345,7 +345,6 @@ const LandingPage = () => {
           {currentPage === 'login' && <Login setCurrentPage={setCurrentPage} />}
           {currentPage === 'signup' && <Signup setCurrentPage={setCurrentPage} />}
         </div>
-
       </Modal>
       
 
