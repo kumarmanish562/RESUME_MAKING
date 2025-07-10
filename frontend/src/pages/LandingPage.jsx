@@ -12,7 +12,7 @@ const LandingPage = () => {
 
   const [openAuthModal, setOpenAuthModal] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [cuirrentPage, setCurrentPage] = useState('login');
+  const [currentPage, setCurrentPage] = useState('login');
 
   const handleCTA = () => {
     if (!user) {
@@ -294,7 +294,44 @@ const LandingPage = () => {
           </div>
         </section>
 
+        {/* CTA SECTION  */}
+        <section className={landingPageStyles.ctaSection}>
+          <div className={landingPageStyles.ctaContainer}>
+            <div className={landingPageStyles.ctaCard}>
+              <div className={landingPageStyles.ctaCardBg}></div>
+              <div className={landingPageStyles.ctaCardContent}>
+                <h2 className={landingPageStyles.ctaTitle}>
+                  Ready to Build Your <span className={landingPageStyles.ctaTitleGradient}>Standout Resume?</span>
+                </h2>
+                <p className={landingPageStyles.ctaDescription}>
+                  Join thousands of professionals who have landed their dream jobs with our easy-to-use resume builder.
+                </p>
+                <button
+                  className={landingPageStyles.ctaButton}
+                  onClick={handleCTA}
+                >
+                  <div className={landingPageStyles.ctaButtonOverlay}></div>
+                  <span className={landingPageStyles.ctaButtonText}>Start Building Now 
+                    </span>
+                </button>
+                </div>
+              </div>
+            </div>
+        </section>
       </main>
+
+      {/* Footer */}
+      <footer className={landingPageStyles.footer}>
+        <div className={landingPageStyles.footerContainer}>
+          <p className={landingPageStyles.footerText}>
+              Crafted with <span className={landingPageStyles.footerHeart}>❤️</span> by{'  '}
+              <a href="https://www.linkedin.com/in/manish-kumar-123456789/" target="_blank" className={landingPageStyles.footerLink}>
+                Manish Kumar
+              </a>
+          </p>
+        </div>
+      </footer>
+
     </div>
   );
 };
