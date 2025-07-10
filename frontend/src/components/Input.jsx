@@ -31,3 +31,5 @@ export const Input = ({ value, onChange, label, placeholder , type= "text"}) => 
   )
 }
 
+export default Input;
+
