@@ -5,6 +5,9 @@ import { Download, LayoutTemplate, MenuIcon, X, Zap } from 'lucide-react';
 import { UserContext } from '../context/UserContext';
 import { ProfileInfoCard } from '../components/Cards';
 import { ArrowRight } from 'lucide-react';
+import Modal from '../components/Modal';
+import Login from '../components/Login';
+import Signup from '../components/Signup';
 
 const LandingPage = () => {
   const { user } = useContext(UserContext);
@@ -331,6 +334,20 @@ const LandingPage = () => {
           </p>
         </div>
       </footer>
+
+
+      {/*  Modal for login and signup */}
+      <Modal isOpen={openAuthModal} onClose={() => {
+        setOpenAuthModal(false)
+        setCurrentPage('login')
+      }}hideHeader>
+        <div>
+          {currentPage === 'login' && <Login setCurrentPage={setCurrentPage} />}
+          {currentPage === 'signup' && <Signup setCurrentPage={setCurrentPage} />}
+        </div>
+
+      </Modal>
+      
 
     </div>
   );
