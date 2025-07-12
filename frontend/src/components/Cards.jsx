@@ -1,6 +1,6 @@
 // Profile INFO CArds
 
-import { Award, Clock, TrendingUp, User, Zap } from "lucide-react"
+import { Award, Clock, Edit, Trash2, TrendingUp, User, Zap } from "lucide-react"
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { useContext, useState } from "react";

@@ -8,6 +8,8 @@ import axiosInstance from '../utils/axiosInstance'
 import { API_PATHS } from '../utils/apiPath'
 import { toast } from 'react-hot-toast'
 import moment from 'moment'
+import Modal from '../components/Modal'
+import CreateResumeForm from '../components/CreateResumeForm'
 
 const Dashboard = () => {
   const navigate = useNavigate()
@@ -206,7 +208,7 @@ const Dashboard = () => {
                    X 
                 </button>
               </div>
-              <CreateResumeFrom onSuccess={() => {
+              <CreateResumeForm onSuccess={() => {
                 setOpenCreateModal(false)
                 fetchAllResumes()
               }} />
@@ -229,8 +231,6 @@ const Dashboard = () => {
                   </p>
                   </div>
               </div>
-            
-           
           </Modal>
 
     </DashboardLayout>
