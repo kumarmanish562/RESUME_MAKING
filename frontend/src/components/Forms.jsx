@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "./Inputs";
+import { Input } from "./Input";
 import { RatingInput } from "./ResumeSection";
 import { Plus, Trash2 } from "lucide-react";
 import {
