@@ -13,23 +13,24 @@ export const uploadResumeImages = async (req, res) => {
         return res.status(400).json({message: "File upload failed", error: err.message})
       }
       const resumeId = req.params.id;
-      const resume = await Resume.findOne({ _id: resumeId, userId: res.user._id})
-      if(!resume) {
+      const resumeDoc = await resume.findOne({ _id: resumeId, userId: req.user._id})
+      if(!resumeDoc) {
         return res.status(404).json({message: "Resume not found or unauthorized"})
       }
       //Use process CWD to Locate uploads folder
       const uploadsFolder = path.join(process.cwd(), "uploads")
-      const baseUrl = `${req.protocal}://${req.get("host")}`;
+      const baseUrl = `${req.protocol}://${req.get("host")}`;
 
       const newThumbnail = req.files.thumbnail?.[0];
+      const newProfileImage = req.files.profileImage?.[0];
 
       if(newThumbnail) {
-        if(resume.thumbnailLink) {
-          const oldThumbnail = path.join(uploadsFolder, path.basename(resume.thumbnailLink));
+        if(resumeDoc.thumbnailLink) {
+          const oldThumbnail = path.join(uploadsFolder, path.basename(resumeDoc.thumbnailLink));
           if(fs.existsSync(oldThumbnail))
             fs.unlinkSync(oldThumbnail)
         }
-        resume.thumbnailLink = `${baseUrl}/uploads/${newThumbnail.filename}`;
+        resumeDoc.thumbnailLink = `${baseUrl}/uploads/${newThumbnail.filename}`;
 
       }
 
@@ -37,18 +38,18 @@ export const uploadResumeImages = async (req, res) => {
       // Same for profileImage
 
       if(newProfileImage) {
-        if(resume.profileInfo?.profilePreviewUrl) {
-          const oldProfile = path.join(uploadsFolder, path.basename(resume.profileInfo.profilePreviewUrl));
+        if(resumeDoc.profileInfo?.profilePreviewUrl) {
+          const oldProfile = path.join(uploadsFolder, path.basename(resumeDoc.profileInfo.profilePreviewUrl));
           if(fs.existsSync(oldProfile))
             fs.unlinkSync(oldProfile)
         }
-        resume.profileInfo.profilePreviewUrl = `${baseUrl}/uploads/${newProfileImage.filename}`;
+        resumeDoc.profileInfo.profilePreviewUrl = `${baseUrl}/uploads/${newProfileImage.filename}`;
 
       }
-      await resume.save();
+      await resumeDoc.save();
       res.status(200).json({ message: "Resume images uploaded successfully",
-        thumbnailLink: resume.thumbnailLink,
-        profilePreviewUrl: resume.profileInfo?.profilePreviewUrl
+        thumbnailLink: resumeDoc.thumbnailLink,
+        profilePreviewUrl: resumeDoc.profileInfo?.profilePreviewUrl
        });
     });
   } catch (error) {

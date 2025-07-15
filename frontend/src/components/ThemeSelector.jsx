@@ -1,13 +1,14 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { DUMMY_RESUME_DATA, resumeTemplates } from '../utils/data'
 import Tabs from './Tabs'
 import { Check } from 'lucide-react'
 import { TemplateCard } from './Cards'
+import RenderResume from './RenderResume'
 
 
 const TAB_DATA = [{ label: 'Templates' }]
 
-const ThemeSelector = ([selectedTheme, setSelectedTheme, resumeData, onClose]) => {
+const ThemeSelector = ({ selectedTheme, setSelectedTheme, resumeData, onClose }) => {
   const resumeRef = useRef(null)
   const [baseWidth, setBaseWidth] = useState(800);
 
@@ -21,7 +22,7 @@ const ThemeSelector = ([selectedTheme, setSelectedTheme, resumeData, onClose]) =
   const [tabValue, setTabValue] = useState('Templates');
 
   const handleThemeSeclection = () => {
-    setSelectedTemplate(selectedTemplate.theme)
+    setSelectedTheme(selectedTemplate.theme)
     onClose();
   }
 
@@ -30,6 +31,15 @@ const ThemeSelector = ([selectedTheme, setSelectedTheme, resumeData, onClose]) =
       setBaseWidth(resumeRef.current.offsetWidth);
     }
   }
+
+  useEffect(() => {
+    updateBaseWidth();
+    window.addEventListener('resize', updateBaseWidth);
+    return () => {
+      window.removeEventListener('resize', updateBaseWidth);
+    };
+  }, []);
+
   return (
     <div className='max-w-7xl mx-auto p-4'>
       {/* header */}

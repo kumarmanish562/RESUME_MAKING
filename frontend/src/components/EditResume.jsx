@@ -1,14 +1,31 @@
 import { useEffect, useRef, useState, useCallback } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import DashboardLayout from './DashboardLayout'
-import { buttonStyles, containerStyles } from '../assets/dummystyle'
+import { buttonStyles, containerStyles, iconStyles, statusStyles } from '../assets/dummystyle'
 import { TitleInput } from './Input'
-import { Download, Palette, Trash2 } from "lucide-react"
+import { AlertCircle, Download, Palette, Trash2, ArrowLeft, Loader2, Save } from "lucide-react"
 import axiosInstance from "../utils/axiosInstance"
 import { API_PATHS } from "../utils/apiPath"
 import { toast } from "react-toastify"
 import { fixTailwindColors } from "../utils/color"
-import  html2pdf from "html2pdf.js"
+import { dataURLtoFile } from "../utils/helper"
+import html2pdf from "html2pdf.js"
+import html2canvas from "html2canvas"
+import StepProgress from "./StepProgress"
+import { 
+  ProfileInfoForm, 
+  ContactInfoForm, 
+  WorkExperienceForm, 
+  EducationDetailsForm, 
+  SkillsInfoForm, 
+  ProjectDetailForm, 
+  CertificationInfoForm, 
+  AdditionalInfoForm 
+} from "./Forms"
+import ThemeSelector from "./ThemeSelector"
+import RenderResume from "./RenderResume"
+import Modal from "./Modal"
+import { Check } from "react-feather"
 
 
 //Resize  observer hook to get the width of the preview container
@@ -198,38 +215,38 @@ const EditResume = () => {
     switch (currentPage) {
       case "profile-info": {
         const { fullName, designation, summary } = resumeData.profileInfo
-        if (!fullName.trim()) errors.push("Full Name is required")
-        if (!designation.trim()) errors.push("Designation is required")
-        if (!summary.trim()) errors.push("Summary is required")
+        if (!fullName?.trim()) errors.push("Full Name is required")
+        if (!designation?.trim()) errors.push("Designation is required")
+        if (!summary?.trim()) errors.push("Summary is required")
         break
       }
 
       case "contact-info": {
         const { email, phone } = resumeData.contactInfo
-        if (!email.trim() || !/^\S+@\S+\.\S+$/.test(email)) errors.push("Valid email is required.")
-        if (!phone.trim() || !/^\d{10}$/.test(phone)) errors.push("Valid 10-digit phone number is required")
+        if (!email?.trim() || !/^\S+@\S+\.\S+$/.test(email)) errors.push("Valid email is required.")
+        if (!phone?.trim() || !/^\d{10}$/.test(phone)) errors.push("Valid 10-digit phone number is required")
         break
       }
 
       case "work-experience":
         resumeData.workExperience.forEach(({ company, role, startDate, endDate }, index) => {
-          if (!company || !company.trim()) errors.push(`Company is required in experience ${index + 1}`)
-          if (!role || !role.trim()) errors.push(`Role is required in experience ${index + 1}`)
+          if (!company?.trim()) errors.push(`Company is required in experience ${index + 1}`)
+          if (!role?.trim()) errors.push(`Role is required in experience ${index + 1}`)
           if (!startDate || !endDate) errors.push(`Start and End dates are required in experience ${index + 1}`)
         })
         break
 
       case "education-info":
         resumeData.education.forEach(({ degree, institution, startDate, endDate }, index) => {
-          if (!degree.trim()) errors.push(`Degree is required in education ${index + 1}`)
-          if (!institution.trim()) errors.push(`Institution is required in education ${index + 1}`)
+          if (!degree?.trim()) errors.push(`Degree is required in education ${index + 1}`)
+          if (!institution?.trim()) errors.push(`Institution is required in education ${index + 1}`)
           if (!startDate || !endDate) errors.push(`Start and End dates are required in education ${index + 1}`)
         })
         break
 
       case "skills":
         resumeData.skills.forEach(({ name, progress }, index) => {
-          if (!name.trim()) errors.push(`Skill name is required in skill ${index + 1}`)
+          if (!name?.trim()) errors.push(`Skill name is required in skill ${index + 1}`)
           if (progress < 1 || progress > 100)
             errors.push(`Skill progress must be between 1 and 100 in skill ${index + 1}`)
         })
@@ -237,15 +254,15 @@ const EditResume = () => {
 
       case "projects":
         resumeData.projects.forEach(({ title, description }, index) => {
-          if (!title.trim()) errors.push(`Project Title is required in project ${index + 1}`)
-          if (!description.trim()) errors.push(`Project description is required in project ${index + 1}`)
+          if (!title?.trim()) errors.push(`Project Title is required in project ${index + 1}`)
+          if (!description?.trim()) errors.push(`Project description is required in project ${index + 1}`)
         })
         break
 
       case "certifications":
         resumeData.certifications.forEach(({ title, issuer }, index) => {
-          if (!title.trim()) errors.push(`Certification Title is required in certification ${index + 1}`)
-          if (!issuer.trim()) errors.push(`Issuer is required in certification ${index + 1}`)
+          if (!title?.trim()) errors.push(`Certification Title is required in certification ${index + 1}`)
+          if (!issuer?.trim()) errors.push(`Issuer is required in certification ${index + 1}`)
         })
         break
 
@@ -692,8 +709,106 @@ const fetchResumeDetailsById = async () => {
         </div>
 
         {/* Step progress */}
+        <div className={containerStyles.grid}>
+          <div className={containerStyles.formContainer}>
+            <StepProgress progress={progress} />
+            {renderForm()}
+            <div className="p-4 sm:p-6">
+              {errorMsg && (
+                <div className={statusStyles.error}>
+                  <AlertCircle size={16} />
+                  {errorMsg}
+                </div>
+              )}
+              <div className="flex flex-wrap items-center justify-end gap-3">
+                <button className={buttonStyles.back} onClick={goBack} disabled={isLoading}>
+                  <ArrowLeft size={16} />
+                  Back
+                </button>
 
+                <button className={buttonStyles.save} onClick={uploadResumeImages} disabled={isLoading}>
+                  {isLoading ? <Loader2 size={16} className="animate-spin " /> : <Save size={16} />}
+                  {isLoading ? "Saving..." : "Save & Exit"}
+                </button>
+                <button className={buttonStyles.next} onClick={validateAndNext} disabled={isLoading}>
+                  {currentPage === "additionalInfo" && <Download size={16} />}
+                  {currentPage === "additionalInfo" ? "Preview & Download" : "Next"}
+                  {currentPage === "additionalInfo" && <ArrowLeft size={16}  className="rotate-180" />}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="hidden lg:block">
+            <div className={containerStyles.previewContainer}>
+              <div className="text-center mb-4">
+                <div className={statusStyles.completionBadge}>
+                  <div className={iconStyles.pulseDot}> </div>
+                  <span > Preview - {completionPercentage} % Complete</span>
+                </div>
+              </div>
+              <div className="preview-container relative" ref={previewContainerRef}>
+                <div className={containerStyles.previewInner}>
+                  <RenderResume key={`preview-${resumeData?.template?.theme}`} 
+                  templateId={resumeData?.template?.theme || ''}
+                  resumeData={resumeData}
+                  containerWidth={previewWidth} />
+                </div>
+              </div>
+          </div>
+          </div>
+        </div>
       </div>
+      {/* Modal Data Here */}
+      <Modal isOpen={openThemeSelector} onClose={() => setOpenThemeSelector(false)} title="Change Theme">
+       <div className={containerStyles.modalContent}>
+         <ThemeSelector selectedTheme={resumeData?.template?.theme} setSelectedTheme={updateTheme} onClose={() => setOpenThemeSelector(false)} />
+       </div>
+      </Modal>
+              <Modal isOpen={openPreviewModal} onClose={() => setOpenPreviewModal(false)} title={resumeData.title}
+                showActionBtn
+                actionBtnText={isDownloading ? "Generating..." : downloadSuccess ? "Download!" : "Download PDF"}
+                  actionBtnIcon={
+                  isDownloading ? (
+                  <Loader2 size={16} className="animate-spin" /> 
+                ): 
+                    downloadSuccess ? (
+                       <Check size={16} className="text-white" />
+                    ) : (
+                       <Download size={16}  />
+                    )
+                  }
+                  onActionClick={downloadPDF}>
+                  <div className="relative">
+                    <div className="text-center mb-4">
+                      <div className={statusStyles.modalBadge}>
+                         <div className={iconStyles.pulseDot}></div>
+                      <span>Completion: {completionPercentage} %</span>
+                      </div>
+                    </div>
+                    <div className={containerStyles.pdfPreview}>
+                      <div ref={resumeDownloadRef} className="a4-wrapper">
+                        <div className="w-full min-h-full">
+                          <RenderResume key={`pdf-${resumeData?.template?.theme}`}
+                          templateId={resumeData?.template?.theme || ''}
+                          resumeData={resumeData}
+                          containerWidth={null} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </Modal>
+
+              {/* Now Thumbnail Error fix */}
+              <div style={{display:"none"}} ref={thumbnailRef}>
+                <div className={containerStyles.hiddenThumbnail}>
+                  <RenderResume key={`thumbnail-${resumeData?.template?.theme}`}
+                    templateId={resumeData?.template?.theme || ''}
+                    resumeData={resumeData}
+                    />
+                </div>
+
+              </div>
+
     </DashboardLayout>
   )
 }
