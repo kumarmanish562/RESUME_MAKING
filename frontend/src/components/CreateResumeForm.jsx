@@ -40,28 +40,33 @@ const handleCreatedResume = async (e) => {
 
   return (
    <div className='w-full max-w-md bg-white rounded-2xl border border-gray-100 shadow-lg p-6'>
-    <h3 className='text-2xl font-bold text-gray-900 mb-2'>
-      Create Your Resume
-    </h3>
+  <h3 className='text-2xl font-bold text-gray-900 mb-2'>
+    Create Your Resume
+  </h3>
 
-    <p className='text-gray-600 mb-8'>
-      Give your resume a title and start building it with our easy-to-use form.
-    </p>
-    <form onSubmit={handleCreatedResume} >
-      <Input value={title || ''} onChange={(e) => setTitle(e.target.value)} 
-      label='Resume Title' placeholder='e.g. Manish - Software Engineer'
-      type='text' required
-       />
-       {error && 
-        <p className='text-red-500 text-sm mb-4'>{error}</p>
-       }
-       <button type='submit' className='w-full py-3 bg-gradient-to-r from-rose-500 to-pink-600 text-white font-black
-       rounded-2xl hover:scale-105 hover:shadow-xl hover:shadow-rose-200 transition-all'>
-       Create Resume
-       </button>
-    </form>
-    
-   </div>
+  <p className='text-gray-600 mb-8'>
+    Give your resume a title and start building it with our easy-to-use form.
+  </p>
+  <form onSubmit={handleCreatedResume}>
+    <Input 
+      value={title || ''} 
+      onChange={(e) => setTitle(e.target.value)} 
+      label='Resume Title' 
+      placeholder='e.g. Manish - Software Engineer'
+      type='text' 
+      required 
+    />
+    {error && 
+      <p className='text-red-500 text-sm mb-4'>{error}</p>
+    }
+    <button 
+      type='submit' 
+      className='w-full py-3 bg-gradient-to-r from-indigo-500 to-cyan-600 text-white font-black
+      rounded-2xl hover:scale-105 hover:shadow-xl hover:shadow-indigo-200 transition-all'>
+      Create Resume
+    </button>
+  </form>
+</div>
   )
 }
 

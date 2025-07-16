@@ -5,6 +5,7 @@ import { validateEmail } from '../utils/helper';
 import { API_PATHS } from '../utils/apiPath';
 import { UserContext } from '../context/UserContext'; 
 import { Input } from './Input';
+import axiosInstance from '../utils/axiosInstance';
 
 const Signup = () => {
     const [fullName, setFullName] = useState('');
@@ -89,7 +90,7 @@ const Signup = () => {
           Already have an account? {'  '}
           <button
             type="button"
-            onClick={() => navigate('/login')}
+            onClick={() => navigate('/')}
             className={styles.signupSwitchButton}
           >
             Sign In
