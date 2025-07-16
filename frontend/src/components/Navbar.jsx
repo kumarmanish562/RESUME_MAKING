@@ -5,7 +5,7 @@ import { ProfileInfoCard } from './Cards';
 
 const Navbar = () => {
   return (
-  <div className="h-16 bg-white/70 backdrop-blur-xl border-b border-indigo-100/50 py-2.5 px-4 md:px-0 sticky top-0 z-50">
+  <div className="h-20 bg-white/70 backdrop-blur-xl border-b border-indigo-100/50 py-2.5 px-4 md:px-0 sticky top-0 z-50">
   <div className="max-w-6xl mx-auto flex items-center justify-between gap-5">
     
     {/* Logo + Brand */}

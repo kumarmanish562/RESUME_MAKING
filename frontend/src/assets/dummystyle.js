@@ -148,12 +148,13 @@ export const dashboardStyles = {
 };
 
 export const cardStyles = {
-  // ProfileInfoCard styles
-  profileCard: "flex items-center gap-3 p-2 sm:p-3 bg-white backdrop-blur-xl border border-sky-100 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.03]",
-  profileInitialsContainer: "w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-sky-600 to-cyan-600 rounded-2xl flex items-center justify-center shadow-md",
-  profileInitialsText: "text-base sm:text-lg font-black text-white",
-  profileName: "text-xs sm:text-sm font-bold text-blue-900",
-  logoutButton: "text-sky-600 text-[10px] sm:text-xs font-bold cursor-pointer hover:text-cyan-600 transition-colors",
+   profileCard: "flex items-center gap-3 p-2 bg-white border border-sky-100 rounded-xl shadow-sm hover:shadow-md transition-all duration-300",
+  profileInitialsContainer: "w-9 h-9 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center shadow",
+  profileInitialsText: "text-sm font-bold text-white",
+  profileName: "text-xs font-semibold text-gray-800 mb-0.5",
+  logoutButton: "inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold text-cyan-600 bg-cyan-50 border border-cyan-100 rounded-full hover:bg-cyan-100 hover:text-cyan-700 transition-all",
+
+
 
   // ResumeSummaryCard styles
   resumeCard: "group relative h-[360px] sm:h-[380px] lg:h-[400px] flex flex-col bg-white border border-sky-100 rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-xl hover:border-sky-300",

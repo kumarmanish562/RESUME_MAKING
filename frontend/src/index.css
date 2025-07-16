@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+/* Cursive Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Satisfy&family=Pacifico&family=Kaushan+Script&display=swap');
 
 @import "tailwindcss";
 
@@ -46,6 +48,27 @@
 
     .animate-text-shine {
         animation: text-shine 3s ease-in-out infinite alternate;
+    }
+
+    /* Cursive Font Utility Classes */
+    .font-cursive-dancing {
+        font-family: 'Dancing Script', cursive;
+    }
+    
+    .font-cursive-satisfy {
+        font-family: 'Satisfy', cursive;
+    }
+    
+    .font-cursive-pacifico {
+        font-family: 'Pacifico', cursive;
+    }
+    
+    .font-cursive-kaushan {
+        font-family: 'Kaushan Script', cursive;
+    }
+    
+    .font-cursive {
+        font-family: 'Dancing Script', 'Satisfy', 'Pacifico', cursive;
     }
 }
 
@@ -115,3 +138,31 @@
         width: 210mm !important;
     }
 }
+
+/* Examples of how to use the cursive fonts:
+
+Dancing Script (elegant)
+<h1 className="font-cursive-dancing text-4xl">Beautiful Title</h1>
+
+Satisfy (handwritten)
+<p className="font-cursive-satisfy text-lg">Handwritten style text</p>
+
+Pacifico (bold & friendly)
+<div className="font-cursive-pacifico text-2xl">Friendly Header</div>
+
+Kaushan Script (artistic)
+<span className="font-cursive-kaushan text-xl">Artistic Text</span>
+
+General cursive (fallback to best available)
+<h2 className="font-cursive text-3xl">Any Cursive Text</h2>
+
+In Login.jsx - make the title cursive
+<h3 className="font-cursive-dancing text-2xl font-black text-blue-900 mb-2">
+  Welcome Back
+</h3>
+
+In Signup.jsx - make the subtitle cursive
+<p className="font-cursive-satisfy text-slate-600 font-medium">
+  join thousands of professionals today
+</p>
+*/
