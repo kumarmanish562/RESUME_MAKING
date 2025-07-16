@@ -156,22 +156,22 @@ const LandingPage = () => {
               </div>
 
               {/* STATS GRID */}
-              <div className={landingPageStyles.statsContainer}>
-                {[
-                  { value: '50K+', label: 'Resumes Created', gradient: 'from-violet-600 to-fuchsia-600' },
-                  { value: '4.9★', label: 'User Rating', gradient: 'from-orange-500 to-red-500' },
-                  { value: '5 Min', label: 'Build Time', gradient: 'from-emerald-500 to-teal-500' }
-                ].map((stat, idx) => (
-                  <div className={landingPageStyles.statItem} key={idx}>
-                    <div className={`${landingPageStyles.statNumber} ${stat.gradient}`}>
-                      {stat.value}
-                    </div>
-                    <div className={landingPageStyles.statLabel}>
-                      {stat.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
+<div className={landingPageStyles.statsContainer}>
+  {[
+    { value: '50K+', label: 'Resumes Created', gradient: 'from-cyan-500 to-indigo-600' },
+    { value: '4.9★', label: 'User Rating', gradient: 'from-blue-500 to-purple-500' },
+    { value: '5 Min', label: 'Build Time', gradient: 'from-teal-400 to-emerald-500' }
+  ].map((stat, idx) => (
+    <div className={landingPageStyles.statItem} key={idx}>
+      <div className={`${landingPageStyles.statNumber} ${stat.gradient}`}>
+        {stat.value}
+      </div>
+      <div className={landingPageStyles.statLabel}>
+        {stat.label}
+      </div>
+    </div>
+  ))}
+</div>
             </div>
 
             {/* Right Content - SVG Illustration */}
@@ -183,17 +183,19 @@ const LandingPage = () => {
                   className={landingPageStyles.svgContainer}
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  {/* Background */}
-                  <defs>
-                    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#8b5cf6" />
-                      <stop offset="100%" stopColor="#d946ef" />
-                    </linearGradient>
-                    <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#ffffff" />
-                      <stop offset="100%" stopColor="#f8fafc" />
-                    </linearGradient>
-                  </defs>
+                 {/* Background */}
+<defs>
+  <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stopColor="#6366f1" />  {/* Indigo-500 */}
+    <stop offset="100%" stopColor="#8b5cf6" /> {/* Violet-500 */}
+  </linearGradient>
+
+  <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stopColor="#fdf4ff" />   {/* Fuchsia-50 */}
+    <stop offset="100%" stopColor="#f3e8ff" /> {/* Purple-50 */}
+  </linearGradient>
+</defs>
+
 
                   {/* SVG elements */}
                   <rect x="50" y="50" width="300" height="400" rx="20" className={landingPageStyles.svgRect} />

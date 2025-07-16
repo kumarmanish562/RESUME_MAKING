@@ -7,7 +7,7 @@ import { UserContext } from '../context/UserContext';
 import { Input } from './Input';
 import axiosInstance from '../utils/axiosInstance';
 
-const Signup = () => {
+const Signup = ({ setCurrentPage }) => {
     const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -56,13 +56,13 @@ const Signup = () => {
     <div className={styles.signupContainer}>
       <div className={styles.headerWrapper}>
         <h3 className={styles.signupTitle}>Create Account</h3>
-        <p className={styles.signupSubtitle}>join thousands of professionals today</p>
+        <p className={styles.signupSubtitle}>Join thousands of professionals today</p>
       </div>
 
       {/* Form  */}
       <form onSubmit ={handleSignup} className={styles.signupForm}>
         <Input value={fullName} 
-        onChanage={({target}) => setFullName(target.value)}
+        onChange={({target}) => setFullName(target.value)}
         label="Full Name"
         placeholder="Manish Kumar"
         type="text"
@@ -90,7 +90,7 @@ const Signup = () => {
           Already have an account? {'  '}
           <button
             type="button"
-            onClick={() => navigate('/')}
+            onClick={() => setCurrentPage('login')}
             className={styles.signupSwitchButton}
           >
             Sign In

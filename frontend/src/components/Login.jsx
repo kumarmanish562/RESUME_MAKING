@@ -93,7 +93,7 @@ const Login = ({ setCurrentPage }) => {
         </button>
 
         {/* Switch to Sign Up */}
-        <p className="mt-4">
+        <p className={`mt-4 ${styles.switchText}`} style={{ textAlign: 'center' }}>
           Don't have an account?{' '}
           <button
             type="button"
