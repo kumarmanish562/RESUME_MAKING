@@ -48,11 +48,9 @@
  */
 
 import { authStyles as styles } from '../assets/dummystyle'
-import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { validateEmail } from '../utils/helper';
 import { API_PATHS } from '../utils/apiPath';
-import { UserContext } from '../context/UserContext'; 
 import { Input } from './Input';
 import axiosInstance from '../utils/axiosInstance';
 
@@ -117,12 +115,8 @@ const Signup = ({ setCurrentPage }) => {
 
   // Error state for validation and API error feedback
   const [error, setError] = useState(null);
-  
-  // Authentication context for user management
-  const { updateUser } = useContext(UserContext);
-  
-  // Navigation hook for post-registration redirect
-  const navigate = useNavigate();
+  // Success state for registration feedback
+  const [isSuccess, setIsSuccess] = useState(false);
 
   /**
    * Handles user registration form submission
@@ -151,6 +145,7 @@ const Signup = ({ setCurrentPage }) => {
     
     // Clear any existing errors
     setError('');
+    setIsSuccess(false);
     
     try {
       // Send registration request to API
@@ -160,18 +155,21 @@ const Signup = ({ setCurrentPage }) => {
         password: password
       });
       
-      // Extract token from response
-      const{token} = response.data;
-      
-      if(token) {
-        // Store token for future authenticated requests
-        localStorage.setItem('token', token);
+      // Check if registration was successful
+      if(response.data.success) {
+        // Show success state
+        setIsSuccess(true);
+        setError('Account created successfully! Redirecting to sign in...');
         
-        // Update user context with registration data
-        updateUser(response.data);
+        // Clear form fields
+        setFullName('');
+        setEmail('');
+        setPassword('');
         
-        // Redirect to dashboard
-        navigate('/dashboard');
+        // Redirect to sign in page after a short delay
+        setTimeout(() => {
+          setCurrentPage('login');
+        }, 2000);
       }
     } 
     catch (error) {
@@ -218,8 +216,12 @@ const Signup = ({ setCurrentPage }) => {
           type="password"
         />
 
-        {/* Error message display */}
-        {error && <div className={styles.errorMessage}>{error}</div>}
+        {/* Error/Success message display */}
+        {error && (
+          <div className={`${styles.errorMessage} ${isSuccess ? 'text-green-600 bg-green-50 border-green-200' : ''}`}>
+            {error}
+          </div>
+        )}
         
         {/* Submit button */}
         <button type="submit" className={styles.signupSubmit}>Create Account</button>
