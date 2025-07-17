@@ -48,11 +48,13 @@
  */
 
 import { authStyles as styles } from '../assets/dummystyle'
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { validateEmail } from '../utils/helper';
 import { API_PATHS } from '../utils/apiPath';
 import { Input } from './Input';
 import axiosInstance from '../utils/axiosInstance';
+import { UserContext } from '../context/UserContext';
 
 /**
  * Signup Component
@@ -115,8 +117,10 @@ const Signup = ({ setCurrentPage }) => {
 
   // Error state for validation and API error feedback
   const [error, setError] = useState(null);
-  // Success state for registration feedback
-  const [isSuccess, setIsSuccess] = useState(false);
+
+  // Context and navigation hooks
+  const { updateUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   /**
    * Handles user registration form submission
@@ -145,7 +149,6 @@ const Signup = ({ setCurrentPage }) => {
     
     // Clear any existing errors
     setError('');
-    setIsSuccess(false);
     
     try {
       // Send registration request to API
@@ -157,19 +160,20 @@ const Signup = ({ setCurrentPage }) => {
       
       // Check if registration was successful
       if(response.data.success) {
-        // Show success state
-        setIsSuccess(true);
-        setError('Account created successfully! Redirecting to sign in...');
-        
-        // Clear form fields
-        setFullName('');
-        setEmail('');
-        setPassword('');
-        
-        // Redirect to sign in page after a short delay
-        setTimeout(() => {
-          setCurrentPage('login');
-        }, 2000);
+        // Extract user data and token from response
+        const { user } = response.data;
+        const token = user.token;
+
+        if (token) {
+          // Store token and update user context
+          localStorage.setItem('token', token);
+          updateUser(user);
+          
+          // Navigate directly to dashboard
+          navigate('/dashboard');
+        } else {
+          setError('Registration failed. No token received.');
+        }
       }
     } 
     catch (error) {
@@ -216,12 +220,8 @@ const Signup = ({ setCurrentPage }) => {
           type="password"
         />
 
-        {/* Error/Success message display */}
-        {error && (
-          <div className={`${styles.errorMessage} ${isSuccess ? 'text-green-600 bg-green-50 border-green-200' : ''}`}>
-            {error}
-          </div>
-        )}
+        {/* Error message display */}
+        {error && <div className={styles.errorMessage}>{error}</div>}
         
         {/* Submit button */}
         <button type="submit" className={styles.signupSubmit}>Create Account</button>
