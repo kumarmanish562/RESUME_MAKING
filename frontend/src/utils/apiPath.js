@@ -12,7 +12,7 @@
  */
 
 // Base URL for the backend API server
-export const BASE_URL = 'http://localhost:5000/';
+export const BASE_URL = 'https://resume-making-backend.onrender.com/';
 
 // Centralized API endpoint definitions organized by feature
 export const API_PATHS = {
