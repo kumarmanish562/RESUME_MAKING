@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
     "axios": "^1.10.0",
+    "cors": "^2.8.5",
     "dayjs": "^1.11.13",
     "html2canvas": "^1.4.1",
     "html2pdf.js": "^0.10.3",

@@ -14,6 +14,7 @@ import express from 'express';
 import { protect } from '../middleware/authMiddleware.js';
 import { createResume, getUserResumes, getResumeById, updateResume, deleteResume } from '../controllers/resumeController.js';
 import { uploadResumeImages } from '../controllers/uploadImages.js'
+import upload from '../middleware/uploadMiddleware.js'
 
 /**
  * Express Router for Resume API Endpoints
@@ -102,7 +103,12 @@ resumeRouter.put('/:id', protect, updateResume);
  *   "profilePreviewUrl": "http://localhost:3000/uploads/profile-123.png"
  * }
  */
-resumeRouter.put('/:id/upload-image', protect, uploadResumeImages);
+// Handle preflight OPTIONS request for upload endpoint
+resumeRouter.options('/:id/upload-image', (req, res) => {
+  res.status(200).end();
+});
+
+resumeRouter.put('/:id/upload-image', protect, upload.fields([{name: "thumbnail"}, {name: "profileImage"}]), uploadResumeImages);
 
 /**
  * @route DELETE /api/resumes/:id

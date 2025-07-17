@@ -53,8 +53,15 @@ const PORT = process.env.PORT || 5000;
  * 
  * Enables Cross-Origin Resource Sharing for frontend-backend communication.
  * Allows requests from frontend applications running on different origins.
+ * Configured to allow both local development and production frontend URLs.
  */
-app.use(cors());
+// Temporary permissive CORS for debugging
+app.use(cors({
+  origin: '*',
+  credentials: false,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
+}));
 
 /**
  * Database Connection
@@ -99,8 +106,10 @@ app.use('/api/resume', resumeRoutes);
  */
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
   setHeaders: (res, path) => {
-    // Set CORS headers for file access from frontend
-    res.set('Access-Control-Allow-Origin', 'http://localhost:5173');
+    // Set CORS headers for file access from multiple frontend origins
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET');
+    res.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   }
 }));
 
