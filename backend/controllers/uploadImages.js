@@ -12,7 +12,6 @@
 import fs from 'fs';
 import path from 'path';
 import resume from '../models/resumeModel.js';
-import upload from '../middleware/uploadMiddleware.js'
 import { error } from 'console';
 
 /**
@@ -46,68 +45,89 @@ import { error } from 'console';
  * }
  */
 export const uploadResumeImages = async (req, res) => {
-  try { 
-    // Configure multer middleware to handle multiple image uploads
-    upload.fields([{name: "thumbnail"}, {name: "profileImage"}])
-    (req, res, async (err) => {
-      // Handle multer upload errors
-      if(err) {
-        return res.status(400).json({message: "File upload failed", error: err.message})
+  try {
+    console.log('Upload request received');
+    console.log('Files:', req.files);
+    console.log('Body:', req.body);
+    console.log('Params:', req.params);
+    
+    // Extract resume ID from URL parameters
+    const resumeId = req.params.id;
+    
+    // Find resume and verify ownership
+    const resumeDoc = await resume.findOne({ _id: resumeId, userId: req.user._id})
+    if(!resumeDoc) {
+      console.log('Resume not found or unauthorized');
+      return res.status(404).json({message: "Resume not found or unauthorized"})
+    }
+
+    // Check if files were uploaded
+    if (!req.files || (!req.files.thumbnail && !req.files.profileImage)) {
+      console.log('No files uploaded');
+      return res.status(400).json({message: "No files uploaded"})
+    }
+    
+    // Define file system paths and base URL for image access
+    const uploadsFolder = path.join(process.cwd(), "uploads")
+    const baseUrl = `${req.protocol}://${req.get("host")}`;
+
+    // Ensure uploads directory exists
+    if (!fs.existsSync(uploadsFolder)) {
+      console.log('Creating uploads directory...');
+      fs.mkdirSync(uploadsFolder, { recursive: true });
+    }
+
+    // Extract uploaded files from request
+    const newThumbnail = req.files.thumbnail?.[0];
+    const newProfileImage = req.files.profileImage?.[0];
+    
+    console.log('Thumbnail file:', newThumbnail ? newThumbnail.filename : 'none');
+    console.log('Profile image file:', newProfileImage ? newProfileImage.filename : 'none');
+
+    // Handle thumbnail image upload and replacement
+    if(newThumbnail) {
+      // Delete existing thumbnail if it exists
+      if(resumeDoc.thumbnailLink) {
+        const oldThumbnail = path.join(uploadsFolder, path.basename(resumeDoc.thumbnailLink));
+        if(fs.existsSync(oldThumbnail))
+          fs.unlinkSync(oldThumbnail)
+      }
+      // Update resume with new thumbnail URL
+      resumeDoc.thumbnailLink = `${baseUrl}/uploads/${newThumbnail.filename}`;
+    }
+
+    // Handle profile image upload and replacement
+    if(newProfileImage) {
+      // Initialize profileInfo if it doesn't exist
+      if (!resumeDoc.profileInfo) {
+        resumeDoc.profileInfo = {};
       }
       
-      // Extract resume ID from URL parameters
-      const resumeId = req.params.id;
-      
-      // Find resume and verify ownership
-      const resumeDoc = await resume.findOne({ _id: resumeId, userId: req.user._id})
-      if(!resumeDoc) {
-        return res.status(404).json({message: "Resume not found or unauthorized"})
+      // Delete existing profile image if it exists
+      if(resumeDoc.profileInfo.profilePreviewUrl) {
+        const oldProfile = path.join(uploadsFolder, path.basename(resumeDoc.profileInfo.profilePreviewUrl));
+        if(fs.existsSync(oldProfile))
+          fs.unlinkSync(oldProfile)
       }
-      
-      // Define file system paths and base URL for image access
-      const uploadsFolder = path.join(process.cwd(), "uploads")
-      const baseUrl = `${req.protocol}://${req.get("host")}`;
+      // Update resume with new profile image URL
+      resumeDoc.profileInfo.profilePreviewUrl = `${baseUrl}/uploads/${newProfileImage.filename}`;
+    }
+    
+    // Save updated resume document to database
+    console.log('Saving resume document...');
+    await resumeDoc.save();
+    console.log('Resume saved successfully');
+    
+    // Respond with success message and updated image URLs
+    const response = { 
+      message: "Resume images uploaded successfully",
+      thumbnailLink: resumeDoc.thumbnailLink,
+      profilePreviewUrl: resumeDoc.profileInfo?.profilePreviewUrl
+    };
+    
+    console.log('Sending response:', response);
+    res.status(200).json(response);
 
-      // Extract uploaded files from request
-      const newThumbnail = req.files.thumbnail?.[0];
-      const newProfileImage = req.files.profileImage?.[0];
-
-      // Handle thumbnail image upload and replacement
-      if(newThumbnail) {
-        // Delete existing thumbnail if it exists
-        if(resumeDoc.thumbnailLink) {
-          const oldThumbnail = path.join(uploadsFolder, path.basename(resumeDoc.thumbnailLink));
-          if(fs.existsSync(oldThumbnail))
-            fs.unlinkSync(oldThumbnail)
-        }
-        // Update resume with new thumbnail URL
-        resumeDoc.thumbnailLink = `${baseUrl}/uploads/${newThumbnail.filename}`;
-
-      }
-
-
-      // Handle profile image upload and replacement
-      if(newProfileImage) {
-        // Delete existing profile image if it exists
-        if(resumeDoc.profileInfo?.profilePreviewUrl) {
-          const oldProfile = path.join(uploadsFolder, path.basename(resumeDoc.profileInfo.profilePreviewUrl));
-          if(fs.existsSync(oldProfile))
-            fs.unlinkSync(oldProfile)
-        }
-        // Update resume with new profile image URL
-        resumeDoc.profileInfo.profilePreviewUrl = `${baseUrl}/uploads/${newProfileImage.filename}`;
-
-      }
-      
-      // Save updated resume document to database
-      await resumeDoc.save();
-      
-      // Respond with success message and updated image URLs
-      res.status(200).json({ message: "Resume images uploaded successfully",
-        thumbnailLink: resumeDoc.thumbnailLink,
-        profilePreviewUrl: resumeDoc.profileInfo?.profilePreviewUrl
-       });
-    });
   } catch (error) {
     // Handle unexpected errors during upload process
     console.error("Error uploading resume images:", error);
