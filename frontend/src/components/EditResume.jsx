@@ -516,6 +516,27 @@ const fetchResumeDetailsById = async () => {
     }
   }
 
+  // Simple save function that saves data without image upload
+  const saveAndExit = async () => {
+    try {
+      setIsLoading(true)
+      
+      // Save resume data directly without image upload
+      await axiosInstance.put(API_PATHS.RESUME.UPDATE(resumeId), {
+        ...resumeData,
+        completion: completionPercentage,
+      })
+      
+      toast.success("Resume saved successfully")
+      navigate("/dashboard")
+    } catch (error) {
+      console.error("Error saving resume:", error)
+      toast.error("Failed to save resume")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
 // This function will help in choosing the preview as well as helps in downloading the resume also saves the resume as a images
   const uploadResumeImages = async () => {
     try {
@@ -566,7 +587,22 @@ const fetchResumeDetailsById = async () => {
     } catch (error) {
       console.error("Error Uploading Images:", error)
       console.error("Error response:", error.response?.data)
-      toast.error("Failed to upload images")
+      console.error("Error status:", error.response?.status)
+      
+      // Show more specific error messages
+      if (error.response?.status === 400) {
+        toast.error("Invalid file format or missing data")
+      } else if (error.response?.status === 401) {
+        toast.error("Authentication failed. Please login again.")
+      } else if (error.response?.status === 404) {
+        toast.error("Resume not found")
+      } else if (error.response?.status >= 500) {
+        toast.error("Server error. Please try again later.")
+      } else if (error.code === 'ERR_NETWORK') {
+        toast.error("Network error. Check your connection.")
+      } else {
+        toast.error("Failed to upload images. Try 'Save & Exit' instead.")
+      }
     } finally {
       setIsLoading(false)
     }
@@ -732,10 +768,11 @@ const fetchResumeDetailsById = async () => {
                   Back
                 </button>
 
-                <button className={buttonStyles.save} onClick={uploadResumeImages} disabled={isLoading}>
+                <button className={buttonStyles.save} onClick={saveAndExit} disabled={isLoading}>
                   {isLoading ? <Loader2 size={16} className="animate-spin " /> : <Save size={16} />}
                   {isLoading ? "Saving..." : "Save & Exit"}
                 </button>
+                
                 <button className={buttonStyles.next} onClick={validateAndNext} disabled={isLoading}>
                   {currentPage === "additionalInfo" && <Download size={16} />}
                   {currentPage === "additionalInfo" ? "Preview & Download" : "Next"}
