@@ -100,7 +100,7 @@ app.use('/api/resume', resumeRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
   setHeaders: (res, path) => {
     // Set CORS headers for file access from frontend
-    res.set('Access-Control-Allow-Origin', 'https://resume-making-frontend.onrender.com');
+    res.set('Access-Control-Allow-Origin', 'http://localhost:5173');
   }
 }));
 

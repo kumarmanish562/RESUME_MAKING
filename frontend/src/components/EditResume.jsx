@@ -517,7 +517,7 @@ const fetchResumeDetailsById = async () => {
   }
 
 // This function will help in choosing the preview as well as helps in downloading the resume also saves the resume as a images
-    const uploadResumeImages = async () => {
+  const uploadResumeImages = async () => {
     try {
       setIsLoading(true)
 
@@ -542,16 +542,21 @@ const fetchResumeDetailsById = async () => {
         `thumbnail-${resumeId}.png`
       )
 
+      console.log('Thumbnail file created:', thumbnailFile);
+      console.log('File size:', thumbnailFile.size);
+      console.log('File type:', thumbnailFile.type);
+
       const formData = new FormData()
       formData.append("thumbnail", thumbnailFile)
 
+      console.log('FormData created, uploading to:', API_PATHS.RESUME.UPLOAD_IMAGES(resumeId));
+
       const uploadResponse = await axiosInstance.put(
         API_PATHS.RESUME.UPLOAD_IMAGES(resumeId),
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
+        formData
       )
+
+      console.log('Upload response:', uploadResponse.data);
 
       const { thumbnailLink } = uploadResponse.data
       await updateResumeDetails(thumbnailLink)
@@ -560,6 +565,7 @@ const fetchResumeDetailsById = async () => {
       navigate("/dashboard")
     } catch (error) {
       console.error("Error Uploading Images:", error)
+      console.error("Error response:", error.response?.data)
       toast.error("Failed to upload images")
     } finally {
       setIsLoading(false)
