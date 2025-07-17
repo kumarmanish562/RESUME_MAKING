@@ -1,7 +1,97 @@
+/**
+ * @fileoverview Template Three Component for Resume Builder Application
+ * 
+ * This component renders a sophisticated two-column resume template with a professional
+ * sidebar layout. It features intelligent skill categorization, comprehensive contact
+ * information display, and optimized content organization for maximum readability.
+ * 
+ * Key Features:
+ * - Two-column layout with dedicated sidebar for contact and skills
+ * - Intelligent skill grouping by category (Automation, Product Management, Languages)
+ * - Responsive scaling with dynamic width calculations
+ * - Professional typography with uppercase section headers
+ * - Interactive contact links with proper URL formatting
+ * - Comprehensive sections: experience, projects, education, certifications, interests
+ * - Clean visual separation with borders and spacing
+ * - Optimized for both screen viewing and printing
+ * 
+ * Design Characteristics:
+ * - Left sidebar (5/12 width): Contact info, skills, education, certifications, interests
+ * - Main content area (7/12 width): Work experience and projects
+ * - Professional gray color scheme with blue accent links
+ * - Consistent uppercase section headers with tracking
+ * - Bullet points and structured content presentation
+ * - Responsive grid system for different screen sizes
+ * 
+ * Usage:
+ * ```jsx
+ * <TemplateThree
+ *   resumeData={userResumeData}
+ *   containerWidth={1100}
+ * />
+ * ```
+ * 
+ * @version 1.0.0
+ * @author Resume Builder Team
+ * @since 2024
+ */
+
 import React, { useEffect, useRef, useState } from "react";
 import { formatYearMonth } from "../utils/helper";
 
+/**
+ * TemplateThree Component
+ * 
+ * A sophisticated two-column resume template featuring a professional sidebar layout
+ * with intelligent content organization. This template emphasizes structured presentation
+ * with clear visual hierarchy and categorized skill groupings.
+ * 
+ * @component
+ * @param {Object} props - Component props
+ * @param {Object} [props.resumeData={}] - Complete resume data object
+ * @param {Object} [props.resumeData.profileInfo] - Personal information (name, designation, summary)
+ * @param {Object} [props.resumeData.contactInfo] - Contact details with location, phone, email, social links
+ * @param {Array} [props.resumeData.education] - Educational background entries
+ * @param {Array} [props.resumeData.workExperience] - Professional work experience with descriptions
+ * @param {Array} [props.resumeData.projects] - Project portfolio with links and technologies
+ * @param {Array} [props.resumeData.skills] - Technical and soft skills (automatically categorized)
+ * @param {Array} [props.resumeData.certifications] - Professional certifications with years
+ * @param {Array} [props.resumeData.interests] - Personal interests and hobbies
+ * @param {number} props.containerWidth - Width of the container for responsive scaling
+ * 
+ * @returns {JSX.Element} The rendered two-column resume template
+ * 
+ * @example
+ * ```jsx
+ * const resumeData = {
+ *   profileInfo: {
+ *     fullName: "Jane Smith",
+ *     designation: "Senior Software Engineer",
+ *     summary: "Experienced full-stack developer with expertise in..."
+ *   },
+ *   contactInfo: {
+ *     location: "San Francisco, CA",
+ *     phone: "+1-555-123-4567",
+ *     email: "jane@example.com",
+ *     linkedin: "https://linkedin.com/in/janesmith",
+ *     github: "https://github.com/janesmith"
+ *   },
+ *   skills: [
+ *     { name: "Python" },
+ *     { name: "Selenium/Webdriver" },
+ *     { name: "Agile" }
+ *   ],
+ *   // ... other sections
+ * };
+ * 
+ * <TemplateThree resumeData={resumeData} containerWidth={1100} />
+ * ```
+ */
 const TemplateThree = ({ resumeData = {}, containerWidth }) => {
+  /**
+   * Destructure resume data with default empty values
+   * Ensures component stability even with incomplete data
+   */
   const {
     profileInfo = {},
     contactInfo = {},
@@ -13,10 +103,19 @@ const TemplateThree = ({ resumeData = {}, containerWidth }) => {
     interests = [],
   } = resumeData;
 
+  // Reference to the main resume container for dimension calculations
   const resumeRef = useRef(null);
+  
+  // State for tracking the actual width of the resume container (default: 1100px for wide layout)
   const [baseWidth, setBaseWidth] = useState(1100);
+  
+  // State for the scaling factor based on container width
   const [scale, setScale] = useState(1);
 
+  /**
+   * Effect hook for responsive scaling calculations
+   * Updates the scale factor when container width changes to maintain proper proportions
+   */
   useEffect(() => {
     if (resumeRef.current) {
       const actualBaseWidth = resumeRef.current.offsetWidth;
@@ -27,7 +126,11 @@ const TemplateThree = ({ resumeData = {}, containerWidth }) => {
     }
   }, [containerWidth]);
 
-  // Group skills by category
+  /**
+   * Intelligent skill categorization system
+   * Automatically groups skills into predefined categories for better organization
+   * Categories: Automation & Test tools, Product Management, Languages, Other Skills
+   */
   const groupedSkills = {
     "Automation & Test tools": [],
     "Product Management": [],
@@ -35,6 +138,7 @@ const TemplateThree = ({ resumeData = {}, containerWidth }) => {
     "Other Skills": []
   };
 
+  // Categorize skills based on predefined skill sets
   skills.forEach(skill => {
     if (["Selenium/Webdriver", "TestNG", "Jenkins"].includes(skill.name)) {
       groupedSkills["Automation & Test tools"].push(skill.name);
@@ -58,27 +162,28 @@ const TemplateThree = ({ resumeData = {}, containerWidth }) => {
         height: "auto",
       }}
     >
-      {/* Header Section */}
+      {/* Header Section - Centered layout with name, designation, and summary */}
       <header className="px-8 pt-8 pb-4 mb-2">
         <div className="text-center">
           <h1 className="text-3xl font-bold uppercase mb-3">{profileInfo.fullName}</h1>
-
           <h2 className="text-lg font-semibold text-gray-700 mb-4">
             {profileInfo.designation}
           </h2>
-
         </div>
-
+        
+        {/* Professional summary paragraph */}
         <p className="text-sm text-gray-700 leading-tight mb-4">
           {profileInfo.summary}
         </p>
       </header>
 
-      {/* Two-Column Layout */}
+      {/* Two-Column Layout: 12-column grid system */}
       <div className="grid grid-cols-12 gap-4 px-8 pb-8">
-        {/* LEFT SIDEBAR - 5 columns */}
+        
+        {/* LEFT SIDEBAR - 5 columns: Contact, Skills, Education, Certifications, Interests */}
         <aside className="col-span-5 space-y-5 pr-4 border-r border-gray-300">
-          {/* Contact */}
+          
+          {/* Contact Information Section */}
           <section>
             <h2 className="text-sm font-bold uppercase text-gray-800 mb-2 tracking-wider">CONTACT</h2>
             <ul className="text-xs text-gray-700 space-y-2 pb-2">
@@ -97,6 +202,8 @@ const TemplateThree = ({ resumeData = {}, containerWidth }) => {
                   {contactInfo.email}
                 </a>
               </li>
+              
+              {/* LinkedIn profile with shortened display URL */}
               {contactInfo.linkedin && (
                 <li className="flex items-start ">
                   <span className="font-semibold min-w-[65px]">LinkedIn:</span>
@@ -107,6 +214,8 @@ const TemplateThree = ({ resumeData = {}, containerWidth }) => {
                   </a>
                 </li>
               )}
+              
+              {/* GitHub profile with shortened display URL */}
               {contactInfo.github && (
                 <li className="flex items-start">
                   <span className="font-semibold min-w-[65px] ">GitHub:</span>
@@ -117,6 +226,8 @@ const TemplateThree = ({ resumeData = {}, containerWidth }) => {
                   </a>
                 </li>
               )}
+              
+              {/* Portfolio website with cleaned display URL */}
               {contactInfo.website && (
                 <li className="flex items-start">
                   <span className="font-semibold min-w-[65px]">Portfolio:</span>
@@ -130,12 +241,13 @@ const TemplateThree = ({ resumeData = {}, containerWidth }) => {
             </ul>
           </section>
 
-          {/* Skills */}
+          {/* Skills Section with Intelligent Categorization */}
           <section>
             <h2 className="text-sm font-bold uppercase text-gray-800 mb-2 tracking-wider">SKILLS</h2>
             {Object.entries(groupedSkills).map(([category, skillsList]) => (
               skillsList.length > 0 && (
                 <div key={category} className="mb-2">
+                  {/* Display category name for organized skill groups */}
                   {category !== "Other Skills" && (
                     <h3 className="text-xs font-semibold italic mb-1">{category}:</h3>
                   )}
@@ -149,7 +261,7 @@ const TemplateThree = ({ resumeData = {}, containerWidth }) => {
             ))}
           </section>
 
-          {/* Education */}
+          {/* Education Section */}
           {education.length > 0 && (
             <section>
               <h2 className="text-sm font-bold uppercase text-gray-800 mb-3 tracking-wider">EDUCATION</h2>
@@ -164,7 +276,7 @@ const TemplateThree = ({ resumeData = {}, containerWidth }) => {
             </section>
           )}
 
-          {/* Certifications */}
+          {/* Certifications Section */}
           {certifications.length > 0 && (
             <section>
               <h2 className="text-sm font-bold uppercase text-gray-800 mb-2 tracking-wider">CERTIFICATIONS</h2>
@@ -176,7 +288,7 @@ const TemplateThree = ({ resumeData = {}, containerWidth }) => {
             </section>
           )}
 
-          {/* Interests */}
+          {/* Interests Section */}
           {interests.length > 0 && (
             <section>
               <h2 className="text-sm font-bold uppercase text-gray-800 mb-2 tracking-wider">INTERESTS</h2>
@@ -189,15 +301,17 @@ const TemplateThree = ({ resumeData = {}, containerWidth }) => {
           )}
         </aside>
 
-        {/* MAIN CONTENT - 7 columns */}
+        {/* MAIN CONTENT AREA - 7 columns: Work Experience and Projects */}
         <main className="col-span-7 space-y-5 pl-4">
-          {/* Work Experience */}
+          
+          {/* Work Experience Section */}
           {workExperience.length > 0 && (
             <section>
               <h2 className="text-sm font-bold uppercase text-gray-800 mb-3 tracking-wider border-b border-gray-400 pb-1">WORK EXPERIENCE</h2>
               <div className="space-y-5">
                 {workExperience.map((exp, idx) => (
                   <div key={idx} className="text-xs">
+                    {/* Experience header with role, company, location, and dates */}
                     <div className="flex justify-between items-start mb-1">
                       <div>
                         <h3 className="font-bold pb-2">{exp.role}</h3>
@@ -209,6 +323,8 @@ const TemplateThree = ({ resumeData = {}, containerWidth }) => {
                         </div>
                       )}
                     </div>
+                    
+                    {/* Experience description with bullet points */}
                     <ul className="list-disc list-inside space-y-1 mt-1 pl-1">
                       {exp.description?.split("\n").map((line, i) => (
                         <li key={i}>{line}</li>
@@ -228,6 +344,7 @@ const TemplateThree = ({ resumeData = {}, containerWidth }) => {
               <div className="space-y-4">
                 {projects.map((proj, idx) => (
                   <div key={idx} className="text-xs">
+                    {/* Project header with title and dates */}
                     <div className="flex justify-between items-start">
                       <h3 className="font-bold">{proj.title}</h3>
                       {proj.startDate && proj.endDate && (
@@ -237,8 +354,10 @@ const TemplateThree = ({ resumeData = {}, containerWidth }) => {
                       )}
                     </div>
 
+                    {/* Project description */}
                     <p className="mt-1 mb-1">{proj.description}</p>
 
+                    {/* Project links and technologies */}
                     <div className="flex flex-wrap gap-2 mt-1">
                       {proj.github && (
                         <a href={proj.github}
