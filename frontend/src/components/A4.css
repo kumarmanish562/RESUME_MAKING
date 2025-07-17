@@ -1,49 +1,104 @@
+/**
+ * A4 Resume Layout Styles
+ * 
+ * CSS styles for ensuring proper A4 page formatting for resume templates.
+ * Handles print media queries, page breaks, and layout constraints for PDF generation.
+ * 
+ * @fileoverview A4 page layout and print optimization styles
+ * @author Resume Builder Application
+ */
+
+/* =================================================================
+   PRINT MEDIA STYLES
+   ================================================================= */
+
+/**
+ * Print Media Query - Forces A4 Layout
+ * 
+ * Ensures that when users print from browser, the output matches
+ * exact A4 dimensions with proper margins and sizing.
+ */
 /* If the user ever prints from the browser, force A4 exactly */
 @media print {
+  /* Page setup for A4 format */
   @page {
-    size: A4;
-    margin: 0;
+    size: A4; /* Standard A4 paper size (210mm × 297mm) */
+    margin: 0; /* Remove default browser margins */
   }
 
+  /* Body and HTML reset for print */
   html,
   body {
-    margin: 0;
-    padding: 0;
-      margin: 0;
-    padding: 0;
-    height: 297mm;
-    width: 210mm;
+    margin: 0; /* Remove all margins */
+    padding: 0; /* Remove all padding */
+    margin: 0; /* Duplicate margin reset for browser compatibility */
+    padding: 0; /* Duplicate padding reset for browser compatibility */
+    height: 297mm; /* A4 height in millimeters */
+    width: 210mm; /* A4 width in millimeters */
   }
 }
 
-/* Make this wrapper at least 210mm × 297mm, but let it shrink if content is shorter */
- .a4-wrapper {
-    width: 210mm;
-    min-height: 297mm;
-    background: white;
-    box-sizing: border-box;
-    overflow: hidden;
-    page-break-after: always;
-  }
+/* =================================================================
+   A4 WRAPPER CONTAINER
+   ================================================================= */
 
+/**
+ * A4 Wrapper Class
+ * 
+ * Main container that enforces A4 dimensions and provides
+ * consistent layout structure for resume content.
+ */
+/* Make this wrapper at least 210mm × 297mm, but let it shrink if content is shorter */
+.a4-wrapper {
+  width: 210mm; /* Standard A4 width */
+  min-height: 297mm; /* Minimum A4 height, allows for shorter content */
+  background: white; /* Ensure white background for printing */
+  box-sizing: border-box; /* Include padding/borders in dimensions */
+  overflow: hidden; /* Prevent content overflow */
+  page-break-after: always; /* Force page break after each A4 wrapper */
+}
+
+/* =================================================================
+   PAGE BREAK PREVENTION
+   ================================================================= */
+
+/**
+ * Heading Elements - Page Break Prevention
+ * 
+ * Prevents headings and section titles from being split
+ * across page boundaries during printing or PDF generation.
+ */
 /* Avoid breaking inside headings or custom section titles */
 .a4-wrapper h1,
 .a4-wrapper h2,
 .a4-wrapper h3,
 .a4-wrapper h4,
 .a4-wrapper .section-title {
-  page-break-inside: avoid;
-  break-inside: avoid;
-  page-break-after: avoid;
+  page-break-inside: avoid; /* Legacy page break prevention */
+  break-inside: avoid; /* Modern CSS break prevention */
+  page-break-after: avoid; /* Prevent breaks immediately after headings */
 }
 
+/**
+ * Resume Section Elements - Content Integrity
+ * 
+ * Ensures entire resume sections stay together and don't
+ * get split across multiple pages for better readability.
+ */
 /* Prevent entire resume sections from splitting */
 .a4-wrapper .resume-section {
-  page-break-inside: avoid;
-  break-inside: avoid;
+  page-break-inside: avoid; /* Legacy page break prevention */
+  break-inside: avoid; /* Modern CSS break prevention */
 }
-  .section-title, .resume-section {
-    break-inside: avoid;
-    page-break-inside: avoid;
-    page-break-after: avoid;
-  }
+
+/**
+ * Additional Section Protection
+ * 
+ * Extra layer of protection for section titles and resume sections
+ * to ensure consistent formatting across different browsers.
+ */
+.section-title, .resume-section {
+  break-inside: avoid; /* Modern CSS break prevention */
+  page-break-inside: avoid; /* Legacy page break prevention */
+  page-break-after: avoid; /* Prevent breaks immediately after sections */
+}
