@@ -1,27 +1,27 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive:wght@400..700&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive:wght@400..700&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 
 
 @theme {
-    --font-display: 'Edu NSW ACT Cursive', cursive;
+    --font-display: 'Roboto', sans-serif;
     --breakpoint-3xl: 1920px;
     --color-primary: #4F46E5; /* Indigo-600 */
 }
 
 @layer base {
     html {
-        font-family: 'Edu NSW ACT Cursive', cursive;
+        font-family: 'Roboto', sans-serif;
     }
 
     body {
         background-color: #fcfbfc;
         overflow-x: hidden;
-        font-family: 'Edu NSW ACT Cursive', cursive;
+        font-family: 'Roboto', sans-serif;
     }
     
     * {
-        font-family: 'Edu NSW ACT Cursive', cursive !important;
+        font-family: 'Roboto', sans-serif !important;
     }
 }
 
@@ -53,13 +53,25 @@
         animation: text-shine 3s ease-in-out infinite alternate;
     }
 
-    /* Cursive Font Utility Classes */
+    /* Font Utility Classes */
     .font-cursive-edu {
         font-family: 'Edu NSW ACT Cursive', cursive;
     }
     
     .font-cursive {
         font-family: 'Edu NSW ACT Cursive', cursive;
+    }
+    
+    .font-roboto {
+        font-family: 'Roboto', sans-serif;
+    }
+    
+    .font-noto-serif {
+        font-family: 'Noto Serif', serif;
+    }
+    
+    .font-open-sans {
+        font-family: 'Open Sans', sans-serif;
     }
 }
 
@@ -145,4 +157,15 @@ In Signup.jsx - make the subtitle cursive
 <p className="font-cursive text-slate-600 font-medium">
   join thousands of professionals today
 </p>
+
+// Cursive fonts
+<h1 className="font-cursive-edu">Edu NSW ACT Cursive</h1>
+<p className="font-cursive">General cursive text</p>
+
+// Sans-serif fonts
+<div className="font-roboto">Modern Roboto font</div>
+<span className="font-open-sans">Clean Open Sans text</span>
+
+// Serif font
+<p className="font-noto-serif">Professional serif text</p>
 */
