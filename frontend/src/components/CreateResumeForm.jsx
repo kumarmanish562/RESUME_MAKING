@@ -47,6 +47,7 @@ const handleCreatedResume = async (e) => {
   <p className='text-gray-600 mb-8'>
     Give your resume a title and start building it with our easy-to-use form.
   </p>
+
   <form onSubmit={handleCreatedResume}>
     <Input 
       value={title || ''} 
@@ -56,17 +57,20 @@ const handleCreatedResume = async (e) => {
       type='text' 
       required 
     />
-    {error && 
+
+    {error && (
       <p className='text-red-500 text-sm mb-4'>{error}</p>
-    }
+    )}
+
     <button 
       type='submit' 
-      className='w-full py-3 bg-gradient-to-r from-indigo-500 to-cyan-600 text-white font-black
-      rounded-2xl hover:scale-105 hover:shadow-xl hover:shadow-indigo-200 transition-all'>
+      className='w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black
+      rounded-2xl hover:scale-105 hover:shadow-xl hover:shadow-emerald-200 transition-all'>
       Create Resume
     </button>
   </form>
 </div>
+
   )
 }
 

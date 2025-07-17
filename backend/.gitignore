@@ -79,7 +79,7 @@ typings/
 .cache
 .parcel-cache
 
-# Next.js build output
+# .js build output
 .next
 
 # Nuxt.js build / generate output
