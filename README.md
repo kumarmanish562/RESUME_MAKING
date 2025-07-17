@@ -43,29 +43,29 @@ Works seamlessly across desktop, tablet, and mobile devices
 *Beautiful, modern landing page with compelling call-to-action*
 
 <div align="center">
-  <img src="./screenshots/landing-hero.png" alt="Landing Page Hero Section" width="800"/>
+  <img src="./screenshots/makerBanner.png" alt="Landing Page Hero Section" width="800"/>
 </div>
 
 <div align="center">
-  <img src="./screenshots/landing-features.png" alt="Landing Page Features" width="800"/>
+  <img src="./screenshots/makerChoose.png" alt="Landing Page Features" width="800"/>
 </div>
 
 <div align="center">
-  <img src="./screenshots/landing-cta.png" alt="Landing Page Call to Action" width="800"/>
+  <img src="./screenshots/makerStart.png" alt="Landing Page Call to Action" width="800"/>
 </div>
 
 ### 📊 Dashboard
 *Clean dashboard showing user's resumes with completion tracking*
 
 <div align="center">
-  <img src="./screenshots/dashboard.png" alt="User Dashboard" width="800"/>
+  <img src="./screenshots/makerDash.png" alt="User Dashboard" width="800"/>
 </div>
 
 ### ✏️ Resume Editor
 *Intuitive step-by-step resume builder with live preview*
 
 <div align="center">
-  <img src="./screenshots/resume-editor.png" alt="Resume Editor Interface" width="800"/>
+  <img src="./screenshots/makerCreate.png" alt="Resume Editor Interface" width="800"/>
 </div>
 
 ---
