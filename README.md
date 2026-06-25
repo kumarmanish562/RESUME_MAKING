@@ -293,7 +293,7 @@ npm run dev
 
 ---
 
-*Ready to build your standout resume? Join thousands of professionals who have landed their dream jobs with our easy-to-use resume builder.*
+*Ready to build your standout resume? Join thousands of professionals who have landed their dream jobs with our easy-to-use resume builder.*. 
 
 
 
